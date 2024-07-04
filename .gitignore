@@ -1,0 +1,7 @@
+*.db
+*.png
+.vscode/
+.FastAPI
+__pycache__
+*.pyc
+.env

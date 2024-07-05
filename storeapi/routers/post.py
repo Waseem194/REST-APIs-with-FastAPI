@@ -13,7 +13,7 @@ def find_post(post_id:int):
     return post_table.get(post_id)
 
 @router.post("/post",response_model=UserPost)
-async def create_comment(post:UserPostIn):
+async def create_post(post:UserPostIn):
     data = post.model_dump()
     last_recode_id = len(post_table)
     new_post = {**data,"id":last_recode_id}
@@ -25,7 +25,7 @@ async def get_all_post():
     return list(post_table.values())
  
 @router.post("/comment",response_model=Comment)
-async def create_post(comment:CommentIn):
+async def create_comment(comment:CommentIn):
     post = find_post(comment.post_id)
     if not post:
         raise HTTPException(status_code=404, detail={"message":"Post not found"})
@@ -41,7 +41,7 @@ async def get_comments_on_post(post_id:int):
        comment for comment in comment_table.values() if comment["post_id"] == post_id
     ]
     
-@router.get("/post{post_id}",response_model=UserPostWithComments)
+@router.get("/post/{post_id}",response_model=UserPostWithComments)
 async def get_post_with_comments(post_id:int):
     post = find_post(post_id)
     if not post:
